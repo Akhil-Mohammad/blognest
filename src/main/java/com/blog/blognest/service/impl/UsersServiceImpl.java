@@ -20,4 +20,30 @@ public class UsersServiceImpl implements UsersService {
         users.setCreated_at(time);
         return usersRepo.save(users);
     }
+
+    @Override
+    public Users getUserById(Long id) {
+        return usersRepo.findById(id).orElseThrow(()-> new RuntimeException("User Not found with that id"));
+    }
+
+    @Override
+    public Users updateUserDetails(Users users, Long id) {
+        return usersRepo.findById(id).map(existingUser -> {
+                    existingUser.setUserName(users.getUserName());
+
+                    return usersRepo.save(existingUser);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+    }
+
+    @Override
+    public String deleteUser(Long id) {
+        if(usersRepo.existsById(id)){
+            usersRepo.deleteById(id);
+            return "User Deleted sucessfully for id "+ id;
+        }else {
+            return "User Not found with Id: "+ id;
+        }
+
+    }
 }

@@ -40,4 +40,36 @@ public class Users {
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", created_at=" + created_at +
+                '}';
+    }
 }

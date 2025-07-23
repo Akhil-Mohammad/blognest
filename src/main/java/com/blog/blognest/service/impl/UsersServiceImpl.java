@@ -1,6 +1,7 @@
 package com.blog.blognest.service.impl;
 
 import com.blog.blognest.entity.Users;
+import com.blog.blognest.exception.NotFoundException;
 import com.blog.blognest.repository.UsersRepo;
 import com.blog.blognest.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users getUserById(Long id) {
-        return usersRepo.findById(id).orElseThrow(()-> new RuntimeException("User Not found with that id"));
+        return usersRepo.findById(id).orElseThrow(()-> new NotFoundException("User Not found with that id :"+ id));
     }
 
     @Override
@@ -33,7 +34,7 @@ public class UsersServiceImpl implements UsersService {
 
                     return usersRepo.save(existingUser);
                 })
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
     }
 
     @Override

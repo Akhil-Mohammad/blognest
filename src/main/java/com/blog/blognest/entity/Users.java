@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Generated;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,6 +20,10 @@ public class Users {
     public String email;
     public String password;
     public LocalDateTime created_at;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Blog> blogs;
+
 
 
     public void setId(Long id) {

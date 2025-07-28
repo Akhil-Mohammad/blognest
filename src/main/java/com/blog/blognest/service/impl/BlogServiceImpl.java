@@ -1,6 +1,8 @@
 package com.blog.blognest.service.impl;
 
 import com.blog.blognest.entity.Blog;
+import com.blog.blognest.entity.Comments;
+import com.blog.blognest.entity.Likes;
 import com.blog.blognest.entity.Users;
 import com.blog.blognest.exception.NotFoundException;
 import com.blog.blognest.repository.BlogRepo;
@@ -62,6 +64,7 @@ public class BlogServiceImpl implements BlogService {
             return "blog not found with id : "+ id;
         }
     }
+
 
 
 }

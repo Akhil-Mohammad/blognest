@@ -5,6 +5,7 @@ import com.blog.blognest.exception.NotFoundException;
 import com.blog.blognest.repository.UsersRepo;
 import com.blog.blognest.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,13 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersRepo usersRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Users saveUser(Users users) {
         LocalDateTime time = LocalDateTime.now();
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
         users.setCreated_at(time);
         return usersRepo.save(users);
     }

@@ -17,7 +17,7 @@ public class UsersController {
 
     Logger log = LoggerFactory.getLogger(UsersController.class);
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Users> createUser (@RequestBody Users  users){
         log.info("Controller :: user creation input {}", users);
         return ResponseEntity.accepted().body(usersService.saveUser(users));

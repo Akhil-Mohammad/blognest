@@ -7,6 +7,7 @@ import com.blog.blognest.entity.LoginRequest;
 import com.blog.blognest.entity.Users;
 import com.blog.blognest.repository.RefreshTokenRepository;
 import com.blog.blognest.repository.UsersRepo;
+import com.blog.blognest.service.UsersService;
 import com.blog.blognest.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,17 @@ public class AuthController {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private UsersService usersService;
+
+    @Autowired
     private RefreshTokenRepository refreshTokenRepo;
+
+
+    @PostMapping("/signup")
+    public ResponseEntity<Users> createUser (@RequestBody Users  users){
+//        log.info("Controller :: user creation input {}", users);
+        return ResponseEntity.accepted().body(usersService.saveUser(users));
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
@@ -51,16 +62,21 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 
+
+        Users user = usersRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         String accessToken = jwtUtil.generateAccessToken(userDetails.getUsername());
         String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
 
         RefreshToken tokenEntity = new RefreshToken();
         tokenEntity.setToken(refreshToken);
         tokenEntity.setEmail(userDetails.getUsername());
-        tokenEntity.setExpiryDate(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7)); // 7 days
+        tokenEntity.setUserId(user.getId());
+        tokenEntity.setExpiryDate(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7));
         refreshTokenRepo.save(tokenEntity);
 
-        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken));
+        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken, user.getId()));
     }
 
 

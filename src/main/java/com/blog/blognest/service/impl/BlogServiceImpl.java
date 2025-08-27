@@ -49,6 +49,7 @@ public class BlogServiceImpl implements BlogService {
                 existingBlog ->{
                     existingBlog.setContent(blog.getContent());
                     existingBlog.setTitle(blog.getTitle());
+                    existingBlog.setImage(blog.getImage());
                     return blogRepo.save(existingBlog);
                 }).orElseThrow( () ->
                 new NotFoundException("Blog not found with id ; "+ id));

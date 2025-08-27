@@ -23,7 +23,6 @@ public class BlogController {
         return ResponseEntity.ok().body(blogService.createBlog(blog));
     }
 
-
     @GetMapping
     public ResponseEntity<List<Blog>> getAllBlogs(){
         return ResponseEntity.ok().body(blogService.getAll());

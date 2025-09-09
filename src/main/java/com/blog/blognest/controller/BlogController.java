@@ -5,6 +5,7 @@ import com.blog.blognest.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class BlogController {
     private BlogService blogService;
 
 
-    @PostMapping
-    public ResponseEntity<Blog> createBlog(@RequestBody Blog blog){
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Blog> createBlog( @RequestPart("blog") Blog blog,
+                                            @RequestPart(value = "file", required = false)
+                                            MultipartFile file){
         return ResponseEntity.ok().body(blogService.createBlog(blog));
     }
 
